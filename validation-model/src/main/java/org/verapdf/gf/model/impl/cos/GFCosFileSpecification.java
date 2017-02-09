@@ -78,7 +78,7 @@ public class GFCosFileSpecification extends GFCosDict implements CosFileSpecific
 	@Override
 	public Boolean getisAssociatedFile() {
 		return Boolean.valueOf(this.baseObject != null
-				&& StaticContainers.fileSpecificationKeys.contains(this.baseObject.getObjectKey()));
+				&& StaticContainers.fileSpecificationKeys.get().contains(this.baseObject.getObjectKey()));
 	}
 
 	@Override

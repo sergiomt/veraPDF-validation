@@ -222,7 +222,7 @@ public class FileSpecificationKeysHelper {
 			if (directBase != null) {
 				COSKey key = directBase.getObjectKey();
 				if (key != null) {
-					StaticContainers.fileSpecificationKeys.add(key);
+					StaticContainers.fileSpecificationKeys.get().add(key);
 				}
 			}
 		}

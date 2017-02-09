@@ -35,57 +35,59 @@ import java.util.*;
  */
 public class StaticContainers {
 
-	private static PDDocument document;
-	private static PDFAFlavour flavour;
+	private static ThreadLocal<PDDocument> document;
+	private static ThreadLocal<PDFAFlavour> flavour;
 
 	// TaggedPDF
-	public static TaggedPDFRoleMapHelper roleMapHelper;
+	public static ThreadLocal<TaggedPDFRoleMapHelper> roleMapHelper;
 
 	//PBoxPDSeparation
-	public static Map<String, List<GFPDSeparation>> separations = new HashMap<>();
-	public static List<String> inconsistentSeparations = new ArrayList<>();
+	public static ThreadLocal<Map<String, List<GFPDSeparation>>> separations;
+	public static ThreadLocal<List<String>> inconsistentSeparations;
 
 	//ColorSpaceFactory
-	public static Map<String, PDColorSpace> cachedColorSpaces = new HashMap<>();
+	public static ThreadLocal<Map<String, PDColorSpace>> cachedColorSpaces;
 
-	public static Set<COSKey> fileSpecificationKeys = new HashSet<>();
+	public static ThreadLocal<Set<COSKey>> fileSpecificationKeys;
 
 	public static void clearAllContainers() {
-		if (document != null) {
-			document = null;
-		}
-		flavour = null;
-		roleMapHelper = null;
-		separations.clear();
-		inconsistentSeparations.clear();
-		cachedColorSpaces.clear();
-		fileSpecificationKeys.clear();
+		document = new ThreadLocal<PDDocument>();
+		flavour = new ThreadLocal<PDFAFlavour>();
+		roleMapHelper = new ThreadLocal<TaggedPDFRoleMapHelper>();
+		separations = new ThreadLocal<Map<String, List<GFPDSeparation>>>();
+		separations.set(new HashMap<String,List<GFPDSeparation>>());
+		inconsistentSeparations = new ThreadLocal<List<String>>();
+		inconsistentSeparations.set(new ArrayList<String>());
+		cachedColorSpaces = new ThreadLocal<Map<String, PDColorSpace>>();
+		cachedColorSpaces.set(new HashMap<String,PDColorSpace>());
+		fileSpecificationKeys = new ThreadLocal<Set<COSKey>>();
+		fileSpecificationKeys.set(new HashSet<COSKey>());
 	}
 
 	public static PDDocument getDocument() {
-		return document;
+		return document.get();
 	}
 
 	public static void setDocument(PDDocument document) {
-		StaticContainers.document = document;
+		StaticContainers.document.set(document);
 	}
 
 	public static PDFAFlavour getFlavour() {
-		return flavour;
+		return flavour.get();
 	}
 
 	public static void setFlavour(PDFAFlavour flavour) {
-		StaticContainers.flavour = flavour;
-		if (roleMapHelper != null) {
-			roleMapHelper.setFlavour(flavour);
+		StaticContainers.flavour.set(flavour);
+		if (roleMapHelper.get() != null) {
+			roleMapHelper.get().setFlavour(flavour);
 		}
 	}
 
 	public static TaggedPDFRoleMapHelper getRoleMapHelper() {
-		return roleMapHelper;
+		return roleMapHelper.get();
 	}
 
 	public static void setRoleMapHelper(Map<ASAtom, ASAtom> roleMap) {
-		StaticContainers.roleMapHelper = new TaggedPDFRoleMapHelper(roleMap, StaticContainers.flavour);
+		StaticContainers.roleMapHelper.set(new TaggedPDFRoleMapHelper(roleMap, StaticContainers.flavour.get()));
 	}
 }

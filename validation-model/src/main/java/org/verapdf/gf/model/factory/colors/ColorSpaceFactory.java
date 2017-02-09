@@ -67,8 +67,8 @@ public class ColorSpaceFactory {
 			return null;
 		}
 		String uniqueID = getColorSpaceUniqueIdentifier(colorSpace, opm, overprintingFlag);
-		if (StaticContainers.cachedColorSpaces.containsKey(uniqueID)) {
-			return StaticContainers.cachedColorSpaces.get(uniqueID);
+		if (StaticContainers.cachedColorSpaces.get().containsKey(uniqueID)) {
+			return StaticContainers.cachedColorSpaces.get().get(uniqueID);
 		}
 		PDColorSpace result;
 		switch (colorSpace.getType().toString()) {
@@ -114,7 +114,7 @@ public class ColorSpaceFactory {
 		default:
 			return null;
 		}
-		StaticContainers.cachedColorSpaces.put(uniqueID, result);
+		StaticContainers.cachedColorSpaces.get().put(uniqueID, result);
 		return result;
 	}
 

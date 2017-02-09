@@ -90,6 +90,7 @@ public class GFModelParser implements PDFAParser {
 	public static GFModelParser createModelWithFlavour(InputStream toLoad, PDFAFlavour flavour)
 			throws ModelParsingException, EncryptedPdfException {
 		try {
+			StaticContainers.clearAllContainers();
 			return new GFModelParser(toLoad, flavour);
 		} catch (InvalidPasswordException excep) {
 			throw new EncryptedPdfException("The PDF stream appears to be encrypted.", excep);
@@ -101,6 +102,7 @@ public class GFModelParser implements PDFAParser {
 	public static GFModelParser createModelWithFlavour(File pdfFile, PDFAFlavour flavour)
 			throws ModelParsingException, EncryptedPdfException {
 		try {
+			StaticContainers.clearAllContainers();
 			return new GFModelParser(pdfFile, flavour);
 		} catch (InvalidPasswordException excep) {
 			throw new EncryptedPdfException("The PDF stream appears to be encrypted.", excep);

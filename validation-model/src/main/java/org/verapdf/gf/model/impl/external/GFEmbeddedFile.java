@@ -116,26 +116,26 @@ public class GFEmbeddedFile extends GFExternal implements EmbeddedFile {
 	public Map<String, List<GFPDSeparation>> separations;
 	public List<String> inconsistentSeparations;
 	public Map<String, PDColorSpace> cachedColorSpaces;
-	public static Set<COSKey> fileSpecificationKeys;
+	public Set<COSKey> fileSpecificationKeys;
 
 	private void saveStaticContainersState() {
 		this.document = StaticContainers.getDocument();
 		this.flavour = StaticContainers.getFlavour();
-		this.separations = StaticContainers.separations;
-		this.inconsistentSeparations = StaticContainers.inconsistentSeparations;
-		this.cachedColorSpaces = StaticContainers.cachedColorSpaces;
-		this.roleMapHelper = StaticContainers.roleMapHelper;
-		GFEmbeddedFile.fileSpecificationKeys = StaticContainers.fileSpecificationKeys;
+		this.separations = StaticContainers.separations.get();
+		this.inconsistentSeparations = StaticContainers.inconsistentSeparations.get();
+		this.cachedColorSpaces = StaticContainers.cachedColorSpaces.get();
+		this.roleMapHelper = StaticContainers.getRoleMapHelper();
+		this.fileSpecificationKeys = StaticContainers.fileSpecificationKeys.get();
 	}
 
 	private void restoreSavedSCState() {
 		StaticContainers.setDocument(this.document);
 		StaticContainers.setFlavour(this.flavour);
-		StaticContainers.separations = this.separations;
-		StaticContainers.inconsistentSeparations = this.inconsistentSeparations;
-		StaticContainers.cachedColorSpaces = this.cachedColorSpaces;
-		StaticContainers.roleMapHelper = this.roleMapHelper;
-		StaticContainers.fileSpecificationKeys = GFEmbeddedFile.fileSpecificationKeys;
+		StaticContainers.separations.set(this.separations);
+		StaticContainers.inconsistentSeparations.set(this.inconsistentSeparations);
+		StaticContainers.cachedColorSpaces.set(this.cachedColorSpaces);
+		StaticContainers.roleMapHelper.set(this.roleMapHelper);
+		StaticContainers.fileSpecificationKeys.set(this.fileSpecificationKeys);
 	}
 
 }
